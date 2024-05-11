@@ -40,7 +40,6 @@ node {
         stage('Env - clone generator'){
         	git 'https://github.com/jihedjarry/ayadi.git'
         }
-	}
 	/* Run Build */
     	stage('SERVICE - Run'){
       		sh 'docker-compose up -d'
