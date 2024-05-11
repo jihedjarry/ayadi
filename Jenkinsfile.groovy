@@ -36,12 +36,6 @@ node {
         def branchName= env.BRANCH_NAME
         print buildNum
         print branchName		
-	
-	/* Récupération du commitID long */
-    	def commitIdLong = sh returnStdout: true, script: 'git rev-parse HEAD'
-
-	/* Récupération du commitID court */
-    	def commitId = commitIdLong.take(7)
 
     	/* Modification de la version dans le pom.xml */
     	sh "sed -i s/'-SNAPSHOT'/${extension}/g /spring-blog-backend/pom.xml"
@@ -53,9 +47,8 @@ node {
      	print """
 	#################################################
         BanchName: $branchName
-        CommitID: $commitId
         AppVersion: $version
-        JobNumber: $buildNum
+	JobNumber: $buildNum
      	#################################################
         """
 
