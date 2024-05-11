@@ -35,24 +35,7 @@ node {
         def buildNum = env.BUILD_NUMBER
         def branchName= env.BRANCH_NAME
         print buildNum
-        print branchName		
-
-    	/* Modification de la version dans le pom.xml */
-    	sh "sed -i s/'-SNAPSHOT'/${extension}/g /spring-blog-backend/pom.xml"
-
-
-	/* Récupération de la version du pom.xml après modification */
-    	def version = sh returnStdout: true, script: "/spring-blog-backend/pom.xml | grep -A1 '<artifactId>myapp1' | tail -1 |perl -nle 'm{.*<version>(.*)</version>.*};print \$1' | tr -d '\n'"
-
-     	print """
-	#################################################
-        BanchName: $branchName
-        AppVersion: $version
-	JobNumber: $buildNum
-     	#################################################
-        """
-
-		
+        print branchName			
 
         stage('Env - clone generator'){
         	git 'https://github.com/jihedjarry/ayadi.git'
