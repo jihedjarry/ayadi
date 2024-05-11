@@ -36,6 +36,30 @@ node {
         def branchName= env.BRANCH_NAME
         print buildNum
         print branchName		
+	
+	/* Récupération du commitID long */
+    	def commitIdLong = sh returnStdout: true, script: 'git rev-parse HEAD'
+
+	/* Récupération du commitID court */
+    	def commitId = commitIdLong.take(7)
+
+    	/* Modification de la version dans le pom.xml */
+    	sh "sed -i s/'-SNAPSHOT'/${extension}/g /spring-blog-backend/pom.xml"
+
+
+	/* Récupération de la version du pom.xml après modification */
+    	def version = sh returnStdout: true, script: "/spring-blog-backend/pom.xml | grep -A1 '<artifactId>myapp1' | tail -1 |perl -nle 'm{.*<version>(.*)</version>.*};print \$1' | tr -d '\n'"
+
+     	print """
+	#################################################
+        BanchName: $branchName
+        CommitID: $commitId
+        AppVersion: $version
+        JobNumber: $buildNum
+     	#################################################
+        """
+
+		
 
         stage('Env - clone generator'){
         	git 'https://github.com/jihedjarry/ayadi.git'
